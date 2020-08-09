@@ -1,1 +1,18 @@
 // This is an empty scss file for your custom styles - Please add your super duper awesome mega design styles here
+
+
+label.selected .better-label.help {
+	background-color: red;
+	width: 100%;
+	padding: 5px 10px;
+}
+
+label.selected .better-label.concern {
+	background-color: yellow;
+	width: 100%;
+}
+
+label.selected .better-label.ok {
+	background-color: green;
+	width: 100%;
+}
