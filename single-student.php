@@ -27,7 +27,7 @@ $container = get_theme_mod( 'understrap_container_type' );
 				<?php
 				while ( have_posts() ) {
 					the_post();
-					get_template_part( 'loop-templates/content', 'single' );
+					get_template_part( 'loop-templates/content', 'single-student' );
 					acf_form(); 
 					understrap_post_nav();
 
