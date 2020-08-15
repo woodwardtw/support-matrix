@@ -30,6 +30,7 @@ thead {
 
 tr {
 	border: 1px solid;
+	font-size: .8em;
 }
 
 th, td {
@@ -37,15 +38,15 @@ th, td {
 	border-right: 1px solid;
 }
 
-tr.ones {
+tr.count-1 {
 	background-color: $red;
 }
 
-tr.twos {
+tr.count-2 {
 	background-color: $yellow;
 }
 
-tr.threes {
+tr.count-3 {
 	background-color: $green;
 }
 

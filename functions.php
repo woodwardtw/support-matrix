@@ -75,12 +75,71 @@ function no_repsonse_avg($avg, $stu){
 	return $not . '%';
 }
 
-// function average_support($assignment, $array, $post_id){
-// 	if(get_field($assignment, $post_id)){
-// 		$score = get_field($assignment, $post_id);
-// 		array_push($array, $score);	
-// 		var_dump($array);	
-// 		//array_push($avg_3, $assg_3);
-					
-// 	}
-// }
+
+function average_score_blank($avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18){
+	return '<tr class="average-row"><td>Average</td><td>' . 
+			average_score($avg_1) . '</td><td>' . 
+			average_score($avg_2) . '</td><td>' . 
+			average_score($avg_3). '</td><td>' . 
+			average_score($avg_4) . '</td><td>' . 
+			average_score($avg_5) . '</td><td>' . 
+			average_score($avg_6) . '</td><td>' . 
+			average_score($avg_7) . '</td><td>' . 
+			average_score($avg_8) . '</td><td>' . 
+			average_score($avg_9) . '</td><td>' . 
+			average_score($avg_10) . '</td><td>' . 
+			average_score($avg_11) . '</td><td>' . 
+			average_score($avg_12) . '</td><td>' . 
+			average_score($avg_13) . '</td><td>' . 
+			average_score($avg_14) . '</td><td>' . 
+			average_score($avg_15) . '</td><td>' . 
+			average_score($avg_16) . '</td><td>' . 
+			average_score($avg_17) . '</td><td>' . 
+			average_score($avg_18) . '</td></tr>';
+}
+
+
+function average_no_response($avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18, $total_students){
+	return '<tr class="count-row none"><td>Average No Response</td><td>' . 
+			no_repsonse_avg($avg_1, $total_students) . '</td><td>' . 
+			no_repsonse_avg($avg_2, $total_students) . '</td><td>' . 
+			no_repsonse_avg($avg_3, $total_students). '</td><td>' . 
+			no_repsonse_avg($avg_4, $total_students) . '</td><td>' . 
+			no_repsonse_avg($avg_5, $total_students) . '</td><td>' . 
+			no_repsonse_avg($avg_6, $total_students). '</td><td>' . 
+			no_repsonse_avg($avg_7, $total_students) . '</td><td>' . 
+			no_repsonse_avg($avg_8, $total_students) . '</td><td>' . 
+			no_repsonse_avg($avg_9, $total_students) . '</td><td>' . 
+			no_repsonse_avg($avg_10, $total_students) . '</td><td>' . 
+			no_repsonse_avg($avg_11, $total_students) . '</td><td>' . 
+			no_repsonse_avg($avg_12, $total_students) . '</td><td>' . 
+			no_repsonse_avg($avg_13, $total_students) . '</td><td>' . 
+			no_repsonse_avg($avg_14, $total_students) . '</td><td>' . 
+			no_repsonse_avg($avg_15, $total_students) . '</td><td>' . 
+			no_repsonse_avg($avg_16, $total_students) . '</td><td>' . 
+			no_repsonse_avg($avg_17, $total_students) . '</td><td>' . 
+			no_repsonse_avg($avg_18, $total_students) . '</td></tr>';
+}
+
+
+function count_of_scores($score, $avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18){
+	return '<tr class="count-row count-'.$score.'"><td>Quantity of ' . $score . 's</td><td>' . 
+		count_of_score(1,$avg_1) . '</td><td>' . 
+		count_of_score(1,$avg_2) . '</td><td>' . 
+		count_of_score(1,$avg_3). '</td><td>' . 
+		count_of_score(1,$avg_4) . '</td><td>' . 
+		count_of_score(1,$avg_5) . '</td><td>' . 
+		count_of_score(1,$avg_6) . '</td><td>' . 
+		count_of_score(1,$avg_7) . '</td><td>' . 
+		count_of_score(1,$avg_8) . '</td><td>' . 
+		count_of_score(1,$avg_9) . '</td><td>' .
+		count_of_score(1,$avg_10) . '</td><td>' . 		
+		count_of_score(1,$avg_11) . '</td><td>' . 
+		count_of_score(1,$avg_12) . '</td><td>' . 
+		count_of_score(1,$avg_13). '</td><td>' . 
+		count_of_score(1,$avg_14) . '</td><td>' . 
+		count_of_score(1,$avg_15) . '</td><td>' . 
+		count_of_score(1,$avg_16) . '</td><td>' . 
+		count_of_score(1,$avg_17) . '</td><td>' . 
+		count_of_score(1,$avg_18) . '</td></tr>';
+}
