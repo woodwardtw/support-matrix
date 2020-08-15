@@ -41,7 +41,18 @@ function average_score($array) {
    }
 }
 
-
+function count_of_score($score, $array){
+	if($array){
+		$count = array_count_values($array);
+		if (array_key_exists($score, $count)){
+			return $count[$score];	
+		} else {
+			return 'N/A';
+		}
+	} else {
+		return 'N/A';
+	}
+}
 
 
 // function average_support($assignment, $array, $post_id){
