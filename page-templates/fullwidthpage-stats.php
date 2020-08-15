@@ -129,20 +129,27 @@ if ( is_front_page() ) {
 						get_template_part('loop-templates/content', 'table');
 						
 					endwhile;
+
+					//no score
 					echo average_score_blank($avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18);
 				
 					echo average_no_response($avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18, $total_students);
 					
+					//ones
 					echo count_of_scores(1, $avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18);
-					echo '<tr class="avg-row ones"><td>Avg of 1s</td><td>' . avg_of_score(1,$avg_1) . '</td><td>' . avg_of_score(1,$avg_2) . '</td><td>' . avg_of_score(1,$avg_3). '</td><td>' . avg_of_score(1,$avg_4) . '</td><td>' . avg_of_score(1,$avg_5) . '</td><td>' . avg_of_score(1,$avg_6) . '</td><td>' . avg_of_score(1,$avg_7) . '</td><td>' . avg_of_score(1,$avg_8) . '</td><td>' . avg_of_score(1,$avg_9) . '</td><td>' . avg_of_score(1,$avg_10) . '</td></tr>';
 					
+					echo average_of_scores(1, $avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18);
+					
+					//twos
 					echo count_of_scores(2, $avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18);
 
-					echo '<tr class="avg-row twos"><td>Avg of 2s</td><td>' . avg_of_score(2,$avg_1) . '</td><td>' . avg_of_score(2,$avg_2) . '</td><td>' . avg_of_score(2,$avg_3). '</td><td>' . avg_of_score(2,$avg_4) . '</td><td>' . avg_of_score(2,$avg_5) . '</td><td>' . avg_of_score(2,$avg_6) . '</td><td>' . avg_of_score(2,$avg_7) . '</td><td>' . avg_of_score(2,$avg_8) . '</td><td>' . avg_of_score(2,$avg_9) . '</td><td>' . avg_of_score(2,$avg_10) . '</td></tr>';
-						
+					echo average_of_scores(2, $avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18);
+					
+					//threes	
 					echo count_of_scores(3, $avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18);
 
-					echo '<tr class="avg-row threes"><td>Avg of 3s</td><td>' . avg_of_score(3,$avg_1) . '</td><td>' . avg_of_score(3,$avg_2) . '</td><td>' . avg_of_score(3,$avg_3). '</td><td>' . avg_of_score(3,$avg_4) . '</td><td>' . avg_of_score(3,$avg_5) . '</td><td>' . avg_of_score(3,$avg_6) . '</td><td>' . avg_of_score(3,$avg_7) . '</td><td>' . avg_of_score(3,$avg_8) . '</td><td>' . avg_of_score(3,$avg_9) . '</td><td>' . avg_of_score(3,$avg_10) . '</td></tr>';
+					echo average_of_scores(3, $avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18);
+
 					echo '</tbody></table>';
 					endif;
 
