@@ -35,6 +35,7 @@ if ( is_front_page() ) {
 					
 					}
 					?>
+					<button id="hide-students">Hide/Show Students</button>
 				<?php 
 					// echo the_field('groups_to_display').'<br>';
 					// echo the_field('report_access');
