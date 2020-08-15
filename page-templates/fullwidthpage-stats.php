@@ -50,7 +50,6 @@ if ( is_front_page() ) {
 
 					// The Loop
 					if ( $the_query->have_posts() ) :
-						global $avg_1;
 						$avg_1 = array();
 						$avg_2 = array();
 						$avg_3 = array();
@@ -125,13 +124,45 @@ if ( is_front_page() ) {
 							$assg_10 = get_field('assignment_10', $post_id);
 							array_push($avg_10, $assg_10);
 						}
+						if(get_field('assignment_11', $post_id)){
+							$assg_11 = get_field('assignment_11', $post_id);
+							array_push($avg_11, $assg_11);
+						}
+						if(get_field('assignment_12', $post_id)){
+							$assg_12 = get_field('assignment_12', $post_id);
+							array_push($avg_12, $assg_12);
+						}
+						if(get_field('assignment_13', $post_id)){
+							$assg_13 = get_field('assignment_13', $post_id);
+							array_push($avg_13, $assg_13);
+						}
+						if(get_field('assignment_14', $post_id)){
+							$assg_14 = get_field('assignment_14', $post_id);
+							array_push($avg_14, $assg_14);
+						}
+						if(get_field('assignment_15', $post_id)){
+							$assg_15 = get_field('assignment_15', $post_id);
+							array_push($avg_15, $assg_15);
+						}
+						if(get_field('assignment_16', $post_id)){
+							$assg_16 = get_field('assignment_16', $post_id);
+							array_push($avg_16, $assg_16);
+						}
+						if(get_field('assignment_17', $post_id)){
+							$assg_17 = get_field('assignment_17', $post_id);
+							array_push($avg_17, $assg_17);
+						}
+						if(get_field('assignment_18', $post_id)){
+							$assg_18 = get_field('assignment_18', $post_id);
+							array_push($avg_18, $assg_18);
+						}
 							
 						get_template_part('loop-templates/content', 'table');
 						
 					endwhile;
 
 					//no score
-					echo average_score_blank($avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18);
+					echo average_score_total($avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18);
 				
 					echo average_no_response($avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18, $total_students);
 					

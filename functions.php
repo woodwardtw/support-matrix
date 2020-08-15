@@ -76,7 +76,7 @@ function no_repsonse_avg($avg, $stu){
 }
 
 
-function average_score_blank($avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18){
+function average_score_total($avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18){
 	return '<tr class="average-row"><td>Average</td><td>' . 
 			average_score($avg_1) . '</td><td>' . 
 			average_score($avg_2) . '</td><td>' . 
@@ -124,24 +124,24 @@ function average_no_response($avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $av
 
 function count_of_scores($score, $avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18){
 	return '<tr class="count-row count-'.$score.'"><td>Quantity of ' . $score . 's</td><td>' . 
-		count_of_score(1,$avg_1) . '</td><td>' . 
-		count_of_score(1,$avg_2) . '</td><td>' . 
-		count_of_score(1,$avg_3). '</td><td>' . 
-		count_of_score(1,$avg_4) . '</td><td>' . 
-		count_of_score(1,$avg_5) . '</td><td>' . 
-		count_of_score(1,$avg_6) . '</td><td>' . 
-		count_of_score(1,$avg_7) . '</td><td>' . 
-		count_of_score(1,$avg_8) . '</td><td>' . 
-		count_of_score(1,$avg_9) . '</td><td>' .
-		count_of_score(1,$avg_10) . '</td><td>' . 		
-		count_of_score(1,$avg_11) . '</td><td>' . 
-		count_of_score(1,$avg_12) . '</td><td>' . 
-		count_of_score(1,$avg_13). '</td><td>' . 
-		count_of_score(1,$avg_14) . '</td><td>' . 
-		count_of_score(1,$avg_15) . '</td><td>' . 
-		count_of_score(1,$avg_16) . '</td><td>' . 
-		count_of_score(1,$avg_17) . '</td><td>' . 
-		count_of_score(1,$avg_18) . '</td></tr>';
+		count_of_score($score,$avg_1) . '</td><td>' . 
+		count_of_score($score,$avg_2) . '</td><td>' . 
+		count_of_score($score,$avg_3). '</td><td>' . 
+		count_of_score($score,$avg_4) . '</td><td>' . 
+		count_of_score($score,$avg_5) . '</td><td>' . 
+		count_of_score($score,$avg_6) . '</td><td>' . 
+		count_of_score($score,$avg_7) . '</td><td>' . 
+		count_of_score($score,$avg_8) . '</td><td>' . 
+		count_of_score($score,$avg_9) . '</td><td>' .
+		count_of_score($score,$avg_10) . '</td><td>' . 		
+		count_of_score($score,$avg_11) . '</td><td>' . 
+		count_of_score($score,$avg_12) . '</td><td>' . 
+		count_of_score($score,$avg_13). '</td><td>' . 
+		count_of_score($score,$avg_14) . '</td><td>' . 
+		count_of_score($score,$avg_15) . '</td><td>' . 
+		count_of_score($score,$avg_16) . '</td><td>' . 
+		count_of_score($score,$avg_17) . '</td><td>' . 
+		count_of_score($score,$avg_18) . '</td></tr>';
 }
 
 function average_of_scores($score, $avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18){
