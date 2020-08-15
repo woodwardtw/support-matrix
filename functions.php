@@ -69,6 +69,12 @@ function avg_of_score($score, $array){
 }
 
 
+function no_repsonse_avg($avg, $stu){
+	$returned = number_format(count($avg) / $stu, 2)* 100 ;
+	$not = 100 - $returned;
+	return $not . '%';
+}
+
 // function average_support($assignment, $array, $post_id){
 // 	if(get_field($assignment, $post_id)){
 // 		$score = get_field($assignment, $post_id);
