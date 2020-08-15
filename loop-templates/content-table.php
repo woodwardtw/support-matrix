@@ -1,4 +1,4 @@
-    <tr>
+    <tr class="student-row">
       <td><?php the_title();?></td>
       <td><? the_field('assignment_1');?></td>
       <td><? the_field('assignment_2');?></td>
