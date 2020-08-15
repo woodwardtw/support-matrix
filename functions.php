@@ -30,3 +30,26 @@ $understrap_includes = array(
 foreach ( $understrap_includes as $file ) {
 	require_once get_template_directory() . '/inc' . $file;
 }
+
+
+function average_score($array) {
+	if($array){
+		return number_format(array_sum($array) / count($array), 2);
+	}
+   else {
+   	return 'N/A';
+   }
+}
+
+
+
+
+// function average_support($assignment, $array, $post_id){
+// 	if(get_field($assignment, $post_id)){
+// 		$score = get_field($assignment, $post_id);
+// 		array_push($array, $score);	
+// 		var_dump($array);	
+// 		//array_push($avg_3, $assg_3);
+					
+// 	}
+// }

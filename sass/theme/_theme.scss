@@ -16,3 +16,23 @@ label.selected .better-label.ok {
 	background-color: green;
 	width: 100%;
 }
+
+
+table {
+	width: 100%;
+	text-align: left;
+}
+
+thead {
+	border-bottom: 1px solid;
+	background-color: #efefef;
+}
+
+tr {
+	border-bottom: 1px solid;
+}
+
+th, td {
+	padding: 10px;
+	border-right: 1px solid;
+}
