@@ -54,6 +54,20 @@ function count_of_score($score, $array){
 	}
 }
 
+function avg_of_score($score, $array){
+	if($array){
+		$count = array_count_values($array);
+		$array_size = count($array);
+		if (array_key_exists($score, $count)){
+			return number_format($count[$score] / $array_size, 2)* 100 . '%';	
+		} else {
+			return 'N/A';
+		}
+	} else {
+		return 'N/A';
+	}
+}
+
 
 // function average_support($assignment, $array, $post_id){
 // 	if(get_field($assignment, $post_id)){
