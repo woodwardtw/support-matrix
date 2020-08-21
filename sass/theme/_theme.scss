@@ -38,6 +38,20 @@ th, td {
 	border-right: 1px solid;
 }
 
+/*table display*/
+
+tr.student-row:nth-child(even) {
+	background-color: #cae2f3;
+}
+
+tr.average-row.totals{
+	border-top: 3px solid;
+}
+
+tr.none {
+	background-color: #efefef;
+}
+
 tr.count-1 {
 	background-color: $red;
 }
@@ -49,6 +63,7 @@ tr.count-2 {
 tr.count-3 {
 	background-color: $green;
 }
+
 
 .hide {
 	display: none;

@@ -32,12 +32,25 @@ foreach ( $understrap_includes as $file ) {
 }
 
 
+
+/*TABLE STUFF FOR REPORTING*/
 function average_score($array) {
 	if($array){
 		return number_format(array_sum($array) / count($array), 2);
 	}
    else {
    	return 'N/A';
+   }
+}
+
+function count_no_score($array, $count) {
+	if($array){
+		$answers = count($array);
+		$no_response = number_format($count - $answers,0);
+		return $no_response;
+	}
+   else {
+   	return 0;
    }
 }
 
@@ -77,7 +90,7 @@ function no_repsonse_avg($avg, $stu){
 
 
 function average_score_total($avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18){
-	return '<tr class="average-row"><td>Average</td><td>' . 
+	return '<tr class="average-row totals"><td>Average</td><td>' . 
 			average_score($avg_1) . '</td><td>' . 
 			average_score($avg_2) . '</td><td>' . 
 			average_score($avg_3). '</td><td>' . 
@@ -98,9 +111,32 @@ function average_score_total($avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $av
 			average_score($avg_18) . '</td></tr>';
 }
 
+function count_no_score_total($avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18, $count){
+	//count_no_score($array, $count)
+	return '<tr class="count-row none"><td>Quantity No Response</td><td>' . 
+			count_no_score($avg_1, $count) . '</td><td>' . 
+			count_no_score($avg_2, $count) . '</td><td>' . 
+			count_no_score($avg_3, $count). '</td><td>' . 
+			count_no_score($avg_4, $count) . '</td><td>' . 
+			count_no_score($avg_5, $count) . '</td><td>' . 
+			count_no_score($avg_6, $count) . '</td><td>' . 
+			count_no_score($avg_7, $count) . '</td><td>' . 
+			count_no_score($avg_8, $count) . '</td><td>' . 
+			count_no_score($avg_9, $count) . '</td><td>' . 
+			count_no_score($avg_10, $count) . '</td><td>' . 
+			count_no_score($avg_11, $count) . '</td><td>' . 
+			count_no_score($avg_12, $count) . '</td><td>' . 
+			count_no_score($avg_13, $count) . '</td><td>' . 
+			count_no_score($avg_14, $count) . '</td><td>' . 
+			count_no_score($avg_15, $count) . '</td><td>' . 
+			count_no_score($avg_16, $count) . '</td><td>' . 
+			count_no_score($avg_17, $count) . '</td><td>' . 
+			count_no_score($avg_18, $count) . '</td></tr>';
+}
+
 
 function average_no_response($avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_6, $avg_7, $avg_8, $avg_9, $avg_10, $avg_11, $avg_12, $avg_13, $avg_14, $avg_15, $avg_16, $avg_17, $avg_18, $total_students){
-	return '<tr class="count-row none"><td>Average No Response</td><td>' . 
+	return '<tr class="average-row none"><td>Average No Response</td><td>' . 
 			no_repsonse_avg($avg_1, $total_students) . '</td><td>' . 
 			no_repsonse_avg($avg_2, $total_students) . '</td><td>' . 
 			no_repsonse_avg($avg_3, $total_students). '</td><td>' . 
@@ -165,4 +201,72 @@ function average_of_scores($score, $avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_
 		avg_of_score($score,$avg_17) . '</td><td>' . 
 		avg_of_score($score,$avg_18) . '</td></tr>';
 }
+
+
+/*USER CREATION*/
+
+//create user type ALN AUTHOR
+function support_matrix_update_custom_roles() {
+    if ( get_option( 'custom_roles_version' ) < 1 ) {
+        add_role( 'sm_student', 'Student', get_role( 'author' )->capabilities  );
+        update_option( 'custom_roles_version', 1 );
+    }
+}
+add_action( 'init', 'support_matrix_update_custom_roles' );
+
+function support_matrix_get_current_user_roles() {
+ if( is_user_logged_in() ) {
+   $user = wp_get_current_user();
+   $roles = ( array ) $user->roles;
+   return $roles; // This returns an array
+   // Use this to return a single value
+   // return $roles[0];
+ } else {
+ return array();
+ }
+}
+
+
+
+
+//restrict posts to  author level to only the posts they wrote
+function support_matrix_posts_for_current_author($query) {
+    global $pagenow;
+ 
+    if( 'edit.php' != $pagenow || !$query->is_admin )
+        return $query;
+ 
+    if( !current_user_can( 'manage_options' ) ) {
+        global $user_ID;
+        $query->set('author', $user_ID );
+    }
+    return $query;
+}
+add_filter('pre_get_posts', 'support_matrix_posts_for_current_author');
+
+
+add_action('after_setup_theme', 'support_matrix_remove_admin_bar');
+ 
+function support_matrix_remove_admin_bar() {
+	if (!current_user_can('administrator') && !is_admin()) {
+		  show_admin_bar(false);
+		}
+	}
+
+
+//redirect support_matrix authors
+function support_matrix_login_redirect( $redirect_to, $request, $user ) {
+    //is there a user to check?
+    global $user;
+    if ( isset( $user->roles ) && is_array( $user->roles ) ) {
+
+        if ( in_array( 'sm_student', $user->roles ) ) {
+        	 return home_url().'/'; //need to set redirect path !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        } else {
+        	return admin_url();
+        }
+    }
+}
+add_filter( 'login_redirect', 'support_matrix_login_redirect', 10, 3 );
+
 
