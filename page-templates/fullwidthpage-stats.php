@@ -41,6 +41,8 @@ if ( is_front_page() ) {
 					// echo the_field('report_access');
 					$args = array(
 						'post_type' => array('student'),
+						'order' => 'ASC',
+						'orderby' => 'title'
 					);
 					if (get_field('groups_to_display')){
 						$args['cat'] = get_field('groups_to_display');
@@ -74,88 +76,15 @@ if ( is_front_page() ) {
 					  // Do Stuff
 						$total_students = $the_query->post_count;
 						$post_id = get_the_ID();
-						
-						if(get_field('assignment_1', $post_id)){
-							$assg_1 = get_field('assignment_1', $post_id);
-							array_push($avg_1, $assg_1);
-						}
-
-						if(get_field('assignment_2', $post_id)){						
-							$assg_2 = get_field('assignment_2', $post_id);
-							array_push($avg_2, $assg_2);
-						}
-
-						if(get_field('assignment_3', $post_id)){
-							$assg_3 = get_field('assignment_3', $post_id);
-							array_push($avg_3, $assg_3);
-						}
-						
-						if(get_field('assignment_4', $post_id)){
-							$assg_4 = get_field('assignment_4', $post_id);
-							array_push($avg_4, $assg_4);							
-						}
-
-						if(get_field('assignment_5', $post_id)){
-							$assg_5 = get_field('assignment_5', $post_id);
-							array_push($avg_5, $assg_5);
-						}
-
-						if(get_field('assignment_6', $post_id)){
-							$assg_6 = get_field('assignment_6', $post_id);
-							array_push($avg_6, $assg_6);
-						}
-
-						if(get_field('assignment_7', $post_id)){
-							$assg_7 = get_field('assignment_7', $post_id);
-							array_push($avg_7, $assg_7);
-						}
-
-						if(get_field('assignment_8', $post_id)){
-							$assg_8 = get_field('assignment_8', $post_id);
-							array_push($avg_8, $assg_8);
-						}
-
-						if(get_field('assignment_9', $post_id)){
-							$assg_9 = get_field('assignment_9', $post_id);
-							array_push($avg_9, $assg_9);
-						}
-
-						if(get_field('assignment_10', $post_id)){
-							$assg_10 = get_field('assignment_10', $post_id);
-							array_push($avg_10, $assg_10);
-						}
-						if(get_field('assignment_11', $post_id)){
-							$assg_11 = get_field('assignment_11', $post_id);
-							array_push($avg_11, $assg_11);
-						}
-						if(get_field('assignment_12', $post_id)){
-							$assg_12 = get_field('assignment_12', $post_id);
-							array_push($avg_12, $assg_12);
-						}
-						if(get_field('assignment_13', $post_id)){
-							$assg_13 = get_field('assignment_13', $post_id);
-							array_push($avg_13, $assg_13);
-						}
-						if(get_field('assignment_14', $post_id)){
-							$assg_14 = get_field('assignment_14', $post_id);
-							array_push($avg_14, $assg_14);
-						}
-						if(get_field('assignment_15', $post_id)){
-							$assg_15 = get_field('assignment_15', $post_id);
-							array_push($avg_15, $assg_15);
-						}
-						if(get_field('assignment_16', $post_id)){
-							$assg_16 = get_field('assignment_16', $post_id);
-							array_push($avg_16, $assg_16);
-						}
-						if(get_field('assignment_17', $post_id)){
-							$assg_17 = get_field('assignment_17', $post_id);
-							array_push($avg_17, $assg_17);
-						}
-						if(get_field('assignment_18', $post_id)){
-							$assg_18 = get_field('assignment_18', $post_id);
-							array_push($avg_18, $assg_18);
-						}
+						//OLD MESSY WAY JUST IN CASE
+						// if(get_field('assignment_1', $post_id)){
+						// 	$assg_1 = get_field('assignment_1', $post_id);
+						// 	array_push($avg_1, $assg_1);
+						// }
+						$assignments = array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18);
+						foreach($assignments as $number){
+							support_basic_avg('assignment_' . $number, $post_id, ${"avg_" . $number} );
+						}											
 							
 						get_template_part('loop-templates/content', 'table');
 						

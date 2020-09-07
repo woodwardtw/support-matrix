@@ -28,7 +28,7 @@ $container = get_theme_mod( 'understrap_container_type' );
 				while ( have_posts() ) {
 					the_post();
 					get_template_part( 'loop-templates/content', 'single-student' );					
-					if(is_admin() || $post->post_author == get_current_user_id()){
+					if(is_super_admin() || is_admin() || $post->post_author == get_current_user_id()){
 						acf_form(); 
 					}
 					

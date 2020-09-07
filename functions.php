@@ -24,6 +24,7 @@ $understrap_includes = array(
 	'/woocommerce.php',                     // Load WooCommerce functions.
 	'/editor.php',                          // Load Editor functions.
 	'/acf.php',                             // Load ACF functions.	
+	'/batch-user-create.php',                             // Load batch import.	
 	'/deprecated.php',                      // Load deprecated functions.
 );
 
@@ -78,6 +79,13 @@ function avg_of_score($score, $array){
 		}
 	} else {
 		return 'N/A';
+	}
+}
+
+function support_basic_avg($field,$post_id, &$avg){
+	if(get_field($field, $post_id)){
+		$assg_1 = get_field($field, $post_id);
+		array_push($avg, $assg_1);
 	}
 }
 
@@ -260,8 +268,8 @@ function support_matrix_login_redirect( $redirect_to, $request, $user ) {
     global $user;
     if ( isset( $user->roles ) && is_array( $user->roles ) ) {
 
-        if ( in_array( 'sm_student', $user->roles ) ) {
-        	 return home_url().'/'; //need to set redirect path !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        if ( in_array( 'sm_student', $user->roles ) ) {        	
+        	 return home_url().'/' . $user->user_login; //need to set redirect path !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         } else {
         	return admin_url();
         }
@@ -269,4 +277,66 @@ function support_matrix_login_redirect( $redirect_to, $request, $user ) {
 }
 add_filter( 'login_redirect', 'support_matrix_login_redirect', 10, 3 );
 
+//create page for new users if they're sm_student
+
+function support_matrix_make_page($user_id){
+	 $user = get_userdata( $user_id );
+	  if ( isset( $user->roles ) && is_array( $user->roles ) ) {
+        if ( in_array( 'sm_student', $user->roles ) ) { 
+        	 $args = array(
+			  'post_title'    =>  $user->user_login,
+			  'post_author'   => $user_id,
+			  'post_content'  => '',
+			  'post_status'   => 'publish',
+			  'post_type' => 'student'
+			   );
+			   wp_insert_post( $args );
+        }
+    }
+
+}
+
+add_action( 'add_user_to_blog', 'support_matrix_make_page' );
+
+
+
+//make the area to upload the CSV for student creation
+if( function_exists('acf_add_options_page') ) {
+	
+	acf_add_options_page(array(
+		'page_title' 	=> 'Student Import',
+		'menu_title'	=> 'Student Import',
+		'menu_slug' 	=> 'support-matrix-student-import',
+		'capability'	=> 'edit_posts',
+		'redirect'		=> false
+	));
+	
+}
+
+//$variable = get_field('field_name', 'option');
+add_action('acf/save_post', 'support_matrix_process_file', 'option');
+function support_matrix_process_file( $post_id ) {
+
+    // Get previous values.
+    $prev_values = get_fields( $post_id );
+
+    // Get submitted values.
+    $values = $_POST['acf']['field_5f47bbd0010c8'];
+    //write_log(wp_get_attachment_url($values));
+   Users_Import_Batch::setup( wp_get_attachment_url($values));
+}
+
+//LOGGER -- like frogger but more useful
+
+if ( ! function_exists('write_log')) {
+   function write_log ( $log )  {
+      if ( is_array( $log ) || is_object( $log ) ) {
+         error_log( print_r( $log, true ) );
+      } else {
+         error_log( $log );
+      }
+   }
+}
+
+  //print("<pre>".print_r($a,true)."</pre>");
 
