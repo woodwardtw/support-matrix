@@ -1,6 +1,7 @@
+<?php acf_form_head(); ?>
 <?php
 /**
- * Template Name: Full Width Page
+ * Template Name: Main Support
  *
  * Template for displaying a page without sidebar even if a sidebar widget is published.
  *
@@ -27,12 +28,10 @@ if ( is_front_page() ) {
 			<div class="col-md-12 content-area" id="primary">
 
 				<main class="site-main" id="main" role="main">
-
 					<?php
 					while ( have_posts() ) {
 						the_post();
 						get_template_part( 'loop-templates/content', 'page' );
-
 						acf_form(); 
 					}
 					?>

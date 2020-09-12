@@ -299,6 +299,39 @@ function support_matrix_make_page($user_id){
 add_action( 'add_user_to_blog', 'support_matrix_make_page' );
 
 
+//ADD MAIN choose your moments page on theme activation
+add_action('after_switch_theme', 'support_matrix_add_admin_pages');
+
+function support_matrix_add_admin_pages () {
+ 	$args = array(
+			  'post_title'    => 'Name your moments here',
+			  //'post_author'   => ,
+			  'post_content'  => 'Once you submit the form below, you will have the ability to blah blah blah',
+			  'post_status'   => 'publish',
+			  'post_type' => 'page',
+			  'page_template'  => 'page-templates/main-support.php'
+			   );
+			   $new_page = wp_insert_post( $args );
+			   //update_post_meta( $new_page, '_wp_page_template', 'main-support.php' );
+}
+
+add_action('acf/save_post', 'support_matrix_make_naming_pages', 20);
+
+function support_matrix_make_naming_pages($post_id){
+	$parent_id = get_page_by_path('name-your-moments-here');
+	if ($post_id === $parent_id){
+		$args = array(
+			  'post_title'    => 'sub',
+			  //'post_author'   => ,
+			  'post_content'  => 'sub one body',
+			  'post_status'   => 'publish',
+			  'post_type' => 'page',
+			  'post_parent' => $parent_id,
+			   );
+		$new_page = wp_insert_post( $args );
+	}
+}
+
 
 //make the area to upload the CSV for student creation
 if( function_exists('acf_add_options_page') ) {
