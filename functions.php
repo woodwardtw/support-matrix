@@ -312,23 +312,27 @@ function support_matrix_add_admin_pages () {
 			  'page_template'  => 'page-templates/main-support.php'
 			   );
 			   $new_page = wp_insert_post( $args );
-			   //update_post_meta( $new_page, '_wp_page_template', 'main-support.php' );
 }
 
 add_action('acf/save_post', 'support_matrix_make_naming_pages', 20);
 
 function support_matrix_make_naming_pages($post_id){
-	$parent_id = get_page_by_path('name-your-moments-here');
-	if ($post_id === $parent_id){
-		$args = array(
-			  'post_title'    => 'sub',
+	$parent_id = get_page_by_path('name-your-moments-here')->ID;
+	if ($post_id == $parent_id){
+		$values = get_fields( $post_id );
+		foreach ($values as $key => $value) {
+			if($value != ""){
+				$args = array(
+			  'post_title'    => $value,
 			  //'post_author'   => ,
-			  'post_content'  => 'sub one body',
+			  'post_content'  => '',
 			  'post_status'   => 'publish',
 			  'post_type' => 'page',
 			  'post_parent' => $parent_id,
 			   );
 		$new_page = wp_insert_post( $args );
+			}			
+		}		
 	}
 }
 

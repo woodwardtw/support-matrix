@@ -28,6 +28,7 @@ if ( is_front_page() ) {
 			<div class="col-md-12 content-area" id="primary">
 
 				<main class="site-main" id="main" role="main">
+					<?php var_dump(get_page_by_path('name-your-moments-here')->ID);?>
 					<?php
 					while ( have_posts() ) {
 						the_post();
