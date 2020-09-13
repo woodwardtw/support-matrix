@@ -290,7 +290,8 @@ function support_matrix_make_page($user_id){
 			  'post_status'   => 'publish',
 			  'post_type' => 'student'
 			   );
-			   wp_insert_post( $args );
+			   $top_student_page = wp_insert_post( $args );
+			   support_matrix_make_children($top_student_page);
         }
     }
 
@@ -337,6 +338,25 @@ function support_matrix_make_naming_pages($post_id){
 }
 
 
+function support_matrix_make_children($parent_id){
+	$admin_id = get_page_by_path('name-your-moments-here')->ID;
+	$values = get_fields( $admin_id );
+		foreach ($values as $key => $value) {
+			if($value != ""){
+				$args = array(
+			  'post_title'    => $value,
+			  //'post_author'   => ,
+			  'post_content'  => '',
+			  'post_status'   => 'publish',
+			  'post_type' => 'student',
+			  'post_parent' => $parent_id,
+			   );
+		$new_page = wp_insert_post( $args );
+			}			
+		}		
+}
+
+
 //make the area to upload the CSV for student creation
 if( function_exists('acf_add_options_page') ) {
 	
@@ -376,4 +396,6 @@ if ( ! function_exists('write_log')) {
 }
 
   //print("<pre>".print_r($a,true)."</pre>");
+
+
 

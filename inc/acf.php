@@ -91,7 +91,7 @@ function create_student_cpt() {
     'show_in_nav_menus' => true,
     'can_export' => true,
     'has_archive' => true,
-    'hierarchical' => false,
+    'hierarchical' => true,
     'exclude_from_search' => false,
     'show_in_rest' => true,
     'publicly_queryable' => true,
@@ -105,3 +105,4 @@ function create_student_cpt() {
   $wp_rewrite->flush_rules();
 }
 add_action( 'init', 'create_student_cpt', 0 );
+

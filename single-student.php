@@ -23,11 +23,22 @@ $container = get_theme_mod( 'understrap_container_type' );
 			<?php get_template_part( 'global-templates/left-sidebar-check' ); ?>
 
 			<main class="site-main" id="main">
+				<ul>
+			    <?php
+			    global $post;
+			    wp_list_pages( array(
+			        'title_li'    => '',
+			        'child_of'    => $post->ID,
+			        'post_type'   => 'student',
+			    ) );
+			    ?>
+</ul>
 
 				<?php
 				while ( have_posts() ) {
 					the_post();
-					get_template_part( 'loop-templates/content', 'single-student' );					
+					get_template_part( 'loop-templates/content', 'single-student' );	
+
 					if(is_super_admin() || is_admin() || $post->post_author == get_current_user_id()){
 						acf_form(); 
 					}
