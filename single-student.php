@@ -25,12 +25,13 @@ $container = get_theme_mod( 'understrap_container_type' );
 			<main class="site-main" id="main">
 				<ul>
 			    <?php
-			    global $post;
-			    wp_list_pages( array(
-			        'title_li'    => '',
-			        'child_of'    => $post->ID,
-			        'post_type'   => 'student',
-			    ) );
+				    global $post;
+				    wp_list_pages( array(
+				        'title_li'    => '',
+				        'child_of'    => $post->ID,
+				        'post_type'   => 'student',
+				        'sort_column'  => 'post_date',
+				    ) );
 			    ?>
 </ul>
 
