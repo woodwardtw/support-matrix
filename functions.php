@@ -211,29 +211,126 @@ function average_of_scores($score, $avg_1, $avg_2, $avg_3, $avg_4, $avg_5, $avg_
 }
 
 
-/*USER CREATION*/
 
-//create user type ALN AUTHOR
-function support_matrix_update_custom_roles() {
-    if ( get_option( 'custom_roles_version' ) < 1 ) {
-        add_role( 'sm_student', 'Student', get_role( 'author' )->capabilities  );
-        update_option( 'custom_roles_version', 1 );
+
+
+//create page for new users if they're sm_student
+
+function support_matrix_make_page($user_id){
+	 $user = get_userdata( $user_id );
+	  if ( isset( $user->roles ) && is_array( $user->roles ) ) {
+        if ( in_array( 'sm_student', $user->roles ) ) { 
+        	 $args = array(
+			  'post_title'    =>  $user->user_login,
+			  'post_author'   => $user_id,
+			  'post_content'  => '',
+			  'post_status'   => 'publish',
+			  'post_type' => 'student'
+			   );
+			   $top_student_page = wp_insert_post( $args );
+			   support_matrix_make_children($top_student_page);
+        }
     }
-}
-add_action( 'init', 'support_matrix_update_custom_roles' );
 
-function support_matrix_get_current_user_roles() {
- if( is_user_logged_in() ) {
-   $user = wp_get_current_user();
-   $roles = ( array ) $user->roles;
-   return $roles; // This returns an array
-   // Use this to return a single value
-   // return $roles[0];
- } else {
- return array();
- }
 }
 
+add_action( 'add_user_to_blog', 'support_matrix_make_page' );
+
+
+//ADD MAIN choose your moments page on theme activation
+add_action('after_switch_theme', 'support_matrix_add_admin_pages');
+
+function support_matrix_add_admin_pages () {
+ 	$args = array(
+			  'post_title'    => 'Name your moments here',
+			  //'post_author'   => ,
+			  'post_content'  => 'Once you submit the form below, you can name your lectures and assessments.',
+			  'post_status'   => 'publish',
+			  'post_type' => 'page',
+			  'page_template'  => 'page-templates/main-support.php'
+			   );
+			   $new_page = wp_insert_post( $args );
+}
+
+add_action('acf/save_post', 'support_matrix_make_naming_pages', 20);
+
+function support_matrix_make_naming_pages($post_id){
+	$parent_id = get_page_by_path('name-your-moments-here')->ID;
+	if ($post_id == $parent_id){
+		if( have_rows('lectures') ):
+
+    		// Loop through rows.
+	    	while( have_rows('lectures') ) : the_row();
+	    		$lecture_title = get_sub_field('lecture_title');
+	    		$slug = sanitize_title($lecture_title);
+	    		$lecture_id = get_sub_field('post_id');
+	    		var_dump($lecture_id);
+	    		if(!get_sub_field('post_id')){
+						$args = array(
+						  'post_title'    => $lecture_title,
+						  'post_content'  => '',
+						  'post_status'   => 'publish',
+						  'post_type' => 'page',
+						  'post_parent' => $parent_id,
+			  			  'page_template'  => 'page-templates/sub-support.php'
+						   );
+						$new_page_id = wp_insert_post( $args );
+						update_sub_field(array('lectures', get_row_index(), 'post_id'), $new_page_id, $post_id);
+					}  else {
+						  $existing_post = array(
+						      'ID'           => $lecture_id,
+						      'post_title'   => $lecture_title,
+						  );
+						 
+						// Update the post into the database
+						  wp_update_post( $existing_post );
+					}
+
+	    	endwhile;
+
+			// No value.
+			else :
+			    // Do something...
+			endif;
+	}
+}
+
+
+function support_matrix_make_children($parent_id){
+	$admin_id = get_page_by_path('name-your-moments-here')->ID;
+	$values = get_fields( $admin_id );
+		foreach ($values as $key => $value) {
+			if($value != ""){//have a value
+					$args = array(
+					  'post_title'    => $value,
+					  //'post_author'   => ,
+					  'post_content'  => '',
+					  'post_status'   => 'publish',
+					  'post_type' => 'student',
+					  'post_parent' => $parent_id,
+					   );
+					$new_page = wp_insert_post( $args );								
+			}			
+		}		
+}
+
+
+//unique slug check 
+
+function support_matrix_duplicate_check($slug, $post_type){
+	$args = array('name' => $slug, 'post_type' => $post_type); 
+	$slug_check = new WP_Query($args);
+	//print("<pre>".print_r($slug_check->found_posts,true)."</pre>");
+	if($slug_check->found_posts > 0 ){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
+
+/*USER CREATION AND DISPLAY TWEAKS*/
 
 
 
@@ -277,84 +374,28 @@ function support_matrix_login_redirect( $redirect_to, $request, $user ) {
 }
 add_filter( 'login_redirect', 'support_matrix_login_redirect', 10, 3 );
 
-//create page for new users if they're sm_student
 
-function support_matrix_make_page($user_id){
-	 $user = get_userdata( $user_id );
-	  if ( isset( $user->roles ) && is_array( $user->roles ) ) {
-        if ( in_array( 'sm_student', $user->roles ) ) { 
-        	 $args = array(
-			  'post_title'    =>  $user->user_login,
-			  'post_author'   => $user_id,
-			  'post_content'  => '',
-			  'post_status'   => 'publish',
-			  'post_type' => 'student'
-			   );
-			   $top_student_page = wp_insert_post( $args );
-			   support_matrix_make_children($top_student_page);
-        }
+//create user type ALN AUTHOR
+function support_matrix_update_custom_roles() {
+    if ( get_option( 'custom_roles_version' ) < 1 ) {
+        add_role( 'sm_student', 'Student', get_role( 'author' )->capabilities  );
+        update_option( 'custom_roles_version', 1 );
     }
+}
+add_action( 'init', 'support_matrix_update_custom_roles' );
 
+function support_matrix_get_current_user_roles() {
+ if( is_user_logged_in() ) {
+   $user = wp_get_current_user();
+   $roles = ( array ) $user->roles;
+   return $roles; // This returns an array
+   // Use this to return a single value
+   // return $roles[0];
+ } else {
+ return array();
+ }
 }
 
-add_action( 'add_user_to_blog', 'support_matrix_make_page' );
-
-
-//ADD MAIN choose your moments page on theme activation
-add_action('after_switch_theme', 'support_matrix_add_admin_pages');
-
-function support_matrix_add_admin_pages () {
- 	$args = array(
-			  'post_title'    => 'Name your moments here',
-			  //'post_author'   => ,
-			  'post_content'  => 'Once you submit the form below, you will have the ability to blah blah blah',
-			  'post_status'   => 'publish',
-			  'post_type' => 'page',
-			  'page_template'  => 'page-templates/main-support.php'
-			   );
-			   $new_page = wp_insert_post( $args );
-}
-
-add_action('acf/save_post', 'support_matrix_make_naming_pages', 20);
-
-function support_matrix_make_naming_pages($post_id){
-	$parent_id = get_page_by_path('name-your-moments-here')->ID;
-	if ($post_id == $parent_id){
-		$values = get_fields( $post_id );
-		foreach ($values as $key => $value) {
-			if($value != ""){
-				$args = array(
-			  'post_title'    => $value,
-			  //'post_author'   => ,
-			  'post_content'  => '',
-			  'post_status'   => 'publish',
-			  'post_type' => 'page',
-			  'post_parent' => $parent_id,
-			   );
-		$new_page = wp_insert_post( $args );
-			}			
-		}		
-	}
-}
-
-
-function support_matrix_make_children($parent_id){
-	$admin_id = get_page_by_path('name-your-moments-here')->ID;
-	$values = get_fields( $admin_id );
-		foreach ($values as $key => $value) {
-			if($value != ""){
-				$args = array(
-			  'post_title'    => $value,
-			  //'post_author'   => ,
-			  'post_content'  => '',
-			  'post_status'   => 'publish',
-			  'post_type' => 'student',
-			  'post_parent' => $parent_id,
-			   );
-		$new_page = wp_insert_post( $args );
-			}			
-		}		
-}
 
 
 //make the area to upload the CSV for student creation
@@ -371,7 +412,7 @@ if( function_exists('acf_add_options_page') ) {
 }
 
 //$variable = get_field('field_name', 'option');
-add_action('acf/save_post', 'support_matrix_process_file', 'option');
+//add_action('acf/save_post', 'support_matrix_process_file', 'option');
 function support_matrix_process_file( $post_id ) {
 
     // Get previous values.

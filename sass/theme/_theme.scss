@@ -76,3 +76,17 @@ tr.count-3 {
 	border: 1px solid #000;
 	float: right;
 }
+
+//lectures styles
+div[data-name="post_id"] {
+	display: none;
+}
+
+
+.acf-button {
+	color: #fff;
+	background-color: $primary;
+	padding: 10px 15px;
+	border-radius: 3px;
+	margin: 10px 0 0 0;
+}

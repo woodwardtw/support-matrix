@@ -1,7 +1,7 @@
 <?php acf_form_head(); ?>
 <?php
 /**
- * Template Name: Main Support
+ * Template Name: Sub Level Support
  *
  * Template for displaying a page without sidebar even if a sidebar widget is published.
  *
@@ -31,7 +31,7 @@ if ( is_front_page() ) {
 					<?php
 					while ( have_posts() ) {
 						the_post();
-						get_template_part( 'loop-templates/content', 'page-support' );						
+						get_template_part( 'loop-templates/content', 'page-sub-support' );						
 						acf_form(); 
 					}
 					?>					
