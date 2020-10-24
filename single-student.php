@@ -39,24 +39,29 @@ $container = get_theme_mod( 'understrap_container_type' );
 				    	if(is_super_admin() || is_admin() || $post->post_author == get_current_user_id()){
 						//build buttons 
 						 $main_page = get_page_by_path( 'main-support' )->ID;
-						 var_dump($main_page);
 							 if( have_rows('lectures', $main_page) ):
 				    		// Loop through rows.
 							 	//build index
 				    			echo '<h2>Index</h2>';								
 							  	echo '<ul>';
 						    	while( have_rows('lectures', $main_page) ) : the_row();
-						    		$post_id = get_sub_field('post_id', $main_page);
-						    		echo '<li><a href="#' . get_post_field( 'post_name', $post_id ) . '">' . get_sub_field('lecture_title',$post_id) . '</a></li>';
+						    		$sub_post_id = get_sub_field('post_id', $main_page);
+						    		$sub_slug = get_post_field( 'post_name', $sub_post_id );
+						    		echo '<li><a href="#' . $sub_slug . '">' . get_sub_field('lecture_title',$sub_post_id) . '</a></li>';
+						    		include( locate_template( 'loop-templates/student-form.php', false, false ) ); 
 						    	endwhile;
 						    	echo '</ul>';
-
 							// No value.
 							else :
 						    // Do something...
 							endif;
  
-					};?>
+					}
+					else {
+						echo 'You do not have access to this content.';
+					}
+
+					;?>
 
 			</main><!-- #main -->
 
