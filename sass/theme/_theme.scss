@@ -92,6 +92,15 @@ div[data-name="post_id"] {
 }
 
 //student page
+
+.single-student h3 {
+	border-bottom: 1px solid $primary;
+}
+
+.single-student h4 {
+	margin-top: 50px;
+}
+
 .input-piece {
 	display: inline-block;
 	width: 200px;
