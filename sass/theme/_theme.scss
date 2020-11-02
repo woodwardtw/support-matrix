@@ -24,8 +24,9 @@ table {
 }
 
 thead {
-	border-bottom: 1px solid;
+	border-bottom: 2px solid;
 	background-color: #efefef;
+	font-weight: 800;
 }
 
 tr {
@@ -44,8 +45,20 @@ tr.student-row:nth-child(even) {
 	background-color: #cae2f3;
 }
 
-tr.average-row.totals{
+tr.quantity{
 	border-top: 3px solid;
+}
+
+tr.one {
+	background-color: $red;
+}
+
+tr.two {
+	background-color: $yellow;
+}
+
+tr.three {
+	background-color: $green;
 }
 
 tr.none {
@@ -98,11 +111,46 @@ div[data-name="post_id"] {
 }
 
 .single-student h4 {
-	margin-top: 50px;
+	margin-top: 20px;
 }
 
 .input-piece {
 	display: inline-block;
 	width: 200px;
 	margin: 5px 10px;
+}
+
+.btn-lecture {
+	display: block;
+	width: 240px;
+	margin: 30px auto;
+}
+
+.show .input-piece input[type=radio]:checked::after {
+	content: '';
+	width: 200px;
+	height: 30px;
+	display: block;
+	z-index: -10;
+	margin-top: -8px;
+}
+
+.show .input-piece.confident input[type=radio]:checked::after {
+	background-color: green;
+}
+
+.show .input-piece.some-concern input[type=radio]:checked::after {
+	background-color: yellow;
+}
+
+.show .input-piece.need-help input[type=radio]:checked::after {
+	background-color: red;
+}
+
+.show .assessment {
+	padding: 10px;
+}
+
+.show .assessment:nth-of-type(odd){
+	background-color: #efefef;
 }

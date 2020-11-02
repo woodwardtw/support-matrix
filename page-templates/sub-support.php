@@ -32,7 +32,6 @@ if ( is_front_page() ) {
 					while ( have_posts() ) {
 						the_post();
 						get_template_part( 'loop-templates/content', 'page-sub-support' );						
-						acf_form(); 
 					}
 					?>					
 
