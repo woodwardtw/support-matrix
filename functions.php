@@ -400,14 +400,33 @@ function support_matrix_login_redirect( $redirect_to, $request, $user ) {
     global $user;
     if ( isset( $user->roles ) && is_array( $user->roles ) ) {
 
-        if ( in_array( 'sm_student', $user->roles ) ) {        	
-        	 return home_url().'/' . $user->user_login; //need to set redirect path !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        if ( in_array( 'sm_student', $user->roles ) ) {   
+        	 return home_url().'/student/' . $user->user_login; //need to set redirect path !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         } else {
         	return admin_url();
         }
     }
 }
 add_filter( 'login_redirect', 'support_matrix_login_redirect', 10, 3 );
+
+
+//REVISIT
+function support_matrix_login_redirect_all() {
+	    	 $user = wp_get_current_user(); 
+	    	 global $wp;
+	    	 $current_url = home_url( $wp->request );
+		    	 if ( in_array( 'sm_student', $user->roles ) ) { 
+			    	  if ($current_url != home_url() .'/student/' . $user->user_login  ){
+			    	  	write_log( home_url() .'/student/' . $user->user_login);
+			    	  	write_log(__LINE__);
+			    	  	// write_log($current_url);
+			    	  	// wp_safe_redirect( home_url() ) .'/student/' . $user->user_login;
+			        //     exit;  
+			    	  }       
+    	}
+   
+}
+//add_action( 'template_redirect', 'support_matrix_login_redirect_all' ); //redirect all the things
 
 
 //create user type ALN AUTHOR

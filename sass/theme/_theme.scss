@@ -154,3 +154,18 @@ div[data-name="post_id"] {
 .show .assessment:nth-of-type(odd){
 	background-color: #efefef;
 }
+
+.group-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.group-buttons h2 {
+	display: block;
+	width: 100%;
+}
+
+.group-buttons a {
+	margin: 10px;
+}

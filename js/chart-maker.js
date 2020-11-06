@@ -10,7 +10,7 @@ let noResponse = document.getElementById('total-unanswered').dataset.total;
 				    data: {
 				        labels: ['Need Help', 'Some Concern', 'Confident', 'No Response'],
 				        datasets: [{
-				            label: 'Total Response Counts',
+				            label: 'Students',
 				            data: [red, yellow, green, noResponse],
 				            backgroundColor: [
 				                '#fa8181',
@@ -30,6 +30,9 @@ let noResponse = document.getElementById('total-unanswered').dataset.total;
 				        }]
 				    },
 				    options: {
+				    	legend: {
+				            display: false
+				         },
 				        scales: {
 				            yAxes: [{
 				                ticks: {

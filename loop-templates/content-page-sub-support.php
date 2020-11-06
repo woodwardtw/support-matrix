@@ -37,10 +37,30 @@ defined( 'ABSPATH' ) || exit;
 						'order' => 'ASC',
 						'orderby' => 'title'
 					);
-					// if (get_field('assignments')){
-					// 	$args['cat'] = get_field('groups_to_display');
+					$user_id = get_current_user_id();
+					
+					if (get_field('student_groups', "user_{$user_id}")){
+						$cats = get_field('student_groups', "user_{$user_id}");
+						$args['cat'] = $cats;
+					}
+					if (isset($_GET['group'])){
+						$cat_slug = $_GET['group'];
+						$cat_id = get_category_by_slug($cat_slug)->term_id;
+						$args['cat'] = $cat_id;
+					}
 
-					// }
+					if ( current_user_can('administrator')){//group buttons for admins
+						//var_dump(get_categories());
+						$all_cats = get_categories();
+						$base_url = strtok($_SERVER["REQUEST_URI"], '?');
+						echo "<div class=\"group-buttons\"><h2>View by group</h2><a class='btn btn-primary' href=\"{$base_url}\">All groups</a>";
+						foreach ($all_cats as $key => $cat) {
+							if($cat->slug != 'uncategorized'){
+								echo "<a class='btn btn-primary' href=\"{$base_url}?group={$cat->slug}\" id=\"{$cat->slug}\">{$cat->name}</a>";
+							}
+						}
+						echo "</div>";
+					}
 					$the_query = new WP_Query( $args );
 					$assignment_page_id = $post->ID;
 					$lecture = $post->post_name;
