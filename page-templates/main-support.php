@@ -1,4 +1,6 @@
-<?php acf_form_head(); ?>
+<?php if( class_exists('ACF') ) {
+	acf_form_head();
+} ?>
 <?php
 /**
  * Template Name: Main Support
@@ -11,7 +13,7 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-acf_form_head();
+
 get_header();
 $container = get_theme_mod( 'understrap_container_type' );
 
@@ -31,10 +33,15 @@ if ( is_front_page() ) {
 					<?php
 					while ( have_posts() ) {
 						the_post();
-						get_template_part( 'loop-templates/content', 'page-support' );						
-						acf_form(); 
+						if( class_exists('ACF')){
+							get_template_part( 'loop-templates/content', 'page-support' );	
+							acf_form(); 					
+						} else {
+							echo 'Please turn on the Advanced Custom Fields Pro plugin.';
+						}
 					}
 					?>					
+
 
 				</main><!-- #main -->
 

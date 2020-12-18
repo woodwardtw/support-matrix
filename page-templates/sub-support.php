@@ -11,7 +11,6 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-acf_form_head();
 get_header();
 $container = get_theme_mod( 'understrap_container_type' );
 
