@@ -272,6 +272,22 @@ function support_matrix_make_page($user_id){
 add_action( 'add_user_to_blog', 'support_matrix_make_page' );
 
 
+//NOT IMPLEMENTED YET -- should keep out duplicate creation of pages on multiple add of user
+function support_matrix_check_duplicate($slug){
+	$args = array(
+	  'name'        => $slug,
+	  'post_type'   => 'post',
+	  'post_status' => 'publish',
+	  'numberposts' => 1
+	);
+	if(get_posts($args)){
+		return TRUE;
+	} else {
+		return FALSE;
+	}
+}
+
+
 //ADD MAIN choose your moments page on theme activation
 add_action('after_switch_theme', 'support_matrix_add_admin_pages');
 
@@ -408,6 +424,22 @@ function support_matrix_login_redirect( $redirect_to, $request, $user ) {
     }
 }
 add_filter( 'login_redirect', 'support_matrix_login_redirect', 10, 3 );
+
+/**
+ * Get the user's roles
+ * @since 1.0.0
+ */
+function wcmo_get_current_user_roles() {
+ if( is_user_logged_in() ) {
+ $user = wp_get_current_user();
+ $roles = ( array ) $user->roles;
+ return $roles; // This returns an array
+ // Use this to return a single value
+ // return $roles[0];
+ } else {
+ return array();
+ }
+}
 
 
 //REVISIT

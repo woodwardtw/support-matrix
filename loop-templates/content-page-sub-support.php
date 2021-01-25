@@ -102,7 +102,11 @@ defined( 'ABSPATH' ) || exit;
 							$student_post_id = get_the_ID();
 							
 							$student_title = get_the_title();
-							$group = get_the_category()[0]->slug;
+							if(get_the_category()){
+								$group = get_the_category()[0]->slug;
+							} else {
+								$group = 'no group';
+							}
 
 							echo "<tr class=\"student-row {$group}\"><td>{$student_title}</td>";							
 							

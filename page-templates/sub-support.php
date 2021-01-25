@@ -30,7 +30,20 @@ if ( is_front_page() ) {
 					<?php
 					while ( have_posts() ) {
 						the_post();
-						get_template_part( 'loop-templates/content', 'page-sub-support' );						
+						$user = wp_get_current_user();
+						if( class_exists('ACF') && current_user_can('administrator')){
+							get_template_part( 'loop-templates/content', 'page-sub-support' );	
+							acf_form(); 					
+						} if ( !class_exists('ACF') && current_user_can('administrator')) {
+							echo 'Please turn on the Advanced Custom Fields Pro plugin.';
+						} if ( class_exists('ACF') && in_array( 'sm_student', wcmo_get_current_user_roles())){ 
+							$user = wp_get_current_user();
+							$stu_page = home_url() .'/student/' . $user->user_login;
+							echo "Please go to <a href='{$stu_page}'>your student page.</a>";
+						} else {
+							$url = wp_login_url();
+							echo "<a href='{$url}'>Please login.</a>";
+						}
 					}
 					?>					
 
@@ -46,3 +59,4 @@ if ( is_front_page() ) {
 
 <?php
 get_footer();
+
