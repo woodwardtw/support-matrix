@@ -263,7 +263,7 @@ function support_matrix_make_page($user_id){
 			  'post_type' => 'student'
 			   );
 			   $top_student_page = wp_insert_post( $args );
-			   support_matrix_make_children($top_student_page);
+			   //support_matrix_make_children($top_student_page); //NO LONGER NEEDED
         }
     }
 

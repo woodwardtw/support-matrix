@@ -35,7 +35,7 @@ $container = get_theme_mod( 'understrap_container_type' );
 			    <?php 
 				    	if(is_super_admin() || is_admin() || $post->post_author == get_current_user_id()){
 						//build buttons 
-						 $main_page = get_page_by_path( 'name-your-moments-here' )->ID;
+						 $main_page = get_page_by_path( 'name-your-moments-here' )->ID;//REVISIT HOW THIS WORKS 
 							 if( have_rows('lectures', $main_page) ):
 				    		// Loop through rows.
 							 	//build index
