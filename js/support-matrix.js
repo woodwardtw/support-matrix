@@ -1,6 +1,3 @@
-console.log('button game on')
-
-
 if (document.querySelector('#hide-students')){
 	const studentHider = document.querySelector('#hide-students');
 	studentHider.addEventListener('click', doTheHiding);
@@ -47,7 +44,8 @@ function ajaxStatus(assessment, status){
             assessment : assessment,
         },
         success : function( response ) {
-            alert('update success') //tells you it worked
+            //alert('update success') //tells you it worked
+            console.log(response)
         }
     });
 }
