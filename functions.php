@@ -286,11 +286,12 @@ function student_double_check(){
 		# code...
 		array_push($student_user_array, $student->user_login);
 	}
-
+	var_dump($student_user_array);
 	//get posts in student post type
 	$post_args = array(
 		'post_type' => 'student',
 		'post_status' => 'publish',
+		'posts_per_page' => -1,
 	);
 	$student_posts = query_posts( $post_args );
 	$student_post_array = array();
@@ -298,13 +299,14 @@ function student_double_check(){
 		# code...
 		array_push($student_post_array, $post->post_title);
 	}
-	
+	var_dump($student_post_array);
 	//look for student users in student pages
 	foreach ($student_user_array as $key => $student) {
-			$present = in_array ( $student, $student_post_array);
+			$present = in_array( $student, $student_post_array);
 			//if in student role and not in post type then make post
-			if ($present !== TRUE ){
+			if ($present != TRUE ){
 				support_matrix_make_page($all_students[$key]->ID);
+				//var_dump($all_students[$key]->ID);
 			}
 	}
 	wp_redirect(get_site_url() . '/wp-admin/edit.php?post_type=student');
@@ -379,7 +381,7 @@ function support_matrix_make_naming_pages($post_id){
 	    		$lecture_title = get_sub_field('lecture_title');
 	    		$slug = sanitize_title($lecture_title);
 	    		$lecture_id = get_sub_field('post_id');
-	    		var_dump($lecture_id);
+	    		//var_dump($lecture_id);
 	    		if(!get_sub_field('post_id')){
 						$args = array(
 						  'post_title'    => $lecture_title,
