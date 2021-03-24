@@ -254,6 +254,7 @@ function avg_assignment_numbers($total, $count) {
 function support_matrix_make_page($user_id){
 	 $user = get_userdata( $user_id );
 	  if ( isset( $user->roles ) && is_array( $user->roles ) ) {
+	  	//add check to see if page exists first 
         if ( in_array( 'sm_student', $user->roles ) ) { 
         	 $args = array(
 			  'post_title'    =>  $user->user_login,
@@ -263,13 +264,76 @@ function support_matrix_make_page($user_id){
 			  'post_type' => 'student'
 			   );
 			   $top_student_page = wp_insert_post( $args );
-			   //support_matrix_make_children($top_student_page); //NO LONGER NEEDED
         }
     }
 
 }
 
 add_action( 'add_user_to_blog', 'support_matrix_make_page' );
+
+
+//MAKING SURE EVERYONE HAS A PAGE
+function student_double_check(){
+	//get users in student role
+	$args = array(
+    	'role'    => 'sm_student',
+    	'order'   => 'ASC'
+	);
+	$all_students = get_users( $args );
+	//var_dump($all_students);
+	$student_user_array = array();
+	foreach ($all_students as $key => $student) {
+		# code...
+		array_push($student_user_array, $student->user_login);
+	}
+
+	//get posts in student post type
+	$post_args = array(
+		'post_type' => 'student',
+		'post_status' => 'publish',
+	);
+	$student_posts = query_posts( $post_args );
+	$student_post_array = array();
+	foreach ($student_posts as $key => $post) {
+		# code...
+		array_push($student_post_array, $post->post_title);
+	}
+	
+	//look for student users in student pages
+	foreach ($student_user_array as $key => $student) {
+			$present = in_array ( $student, $student_post_array);
+			//if in student role and not in post type then make post
+			if ($present !== TRUE ){
+				support_matrix_make_page($all_students[$key]->ID);
+			}
+	}
+	wp_redirect(get_site_url() . '/wp-admin/edit.php?post_type=student');
+}
+
+add_action( 'admin_post_force_student_creation', 'student_double_check' );
+
+//BUILD BUTTON
+
+
+add_action('wp_dashboard_setup', 'sm_force_students_button');
+  
+function sm_force_students_button() {
+	global $wp_meta_boxes;
+	 
+	wp_add_dashboard_widget('custom_help_widget', 'Student Page Creation', 'dashboard_make_students_button');
+}
+ 
+function dashboard_make_students_button() {
+	if(current_user_can( 'edit_posts' )){
+		echo '<form action="'. admin_url('admin-post.php') .'" method="post">
+		  <input type="hidden" name="action" value="force_student_creation">
+		  <input type="submit" value="Force Student Page Creation">
+		</form>';
+	}
+
+}
+
+
 
 
 //NOT IMPLEMENTED YET -- should keep out duplicate creation of pages on multiple add of user
