@@ -286,7 +286,7 @@ function student_double_check(){
 		# code...
 		array_push($student_user_array, $student->user_login);
 	}
-	var_dump($student_user_array);
+	//var_dump($student_user_array);
 	//get posts in student post type
 	$post_args = array(
 		'post_type' => 'student',
@@ -299,7 +299,7 @@ function student_double_check(){
 		# code...
 		array_push($student_post_array, $post->post_title);
 	}
-	var_dump($student_post_array);
+	//var_dump($student_post_array);
 	//look for student users in student pages
 	foreach ($student_user_array as $key => $student) {
 			$present = in_array( $student, $student_post_array);
