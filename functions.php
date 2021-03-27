@@ -497,9 +497,9 @@ add_filter( 'login_redirect', 'support_matrix_login_redirect', 10, 3 );
  */
 function wcmo_get_current_user_roles() {
  if( is_user_logged_in() ) {
- $user = wp_get_current_user();
- $roles = ( array ) $user->roles;
- return $roles; // This returns an array
+	 $user = wp_get_current_user();
+	 $roles = ( array ) $user->roles;
+ 	return $roles; // This returns an array
  // Use this to return a single value
  // return $roles[0];
  } else {
