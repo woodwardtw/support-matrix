@@ -24,7 +24,7 @@ $understrap_includes = array(
 	'/woocommerce.php',                     // Load WooCommerce functions.
 	'/editor.php',                          // Load Editor functions.
 	'/acf.php',                             // Load ACF functions.	
-	'/batch-user-create.php',                             // Load batch import.	
+	'/batch-user-create.php',                   // Load batch import.	
 	'/deprecated.php',                      // Load deprecated functions.
 );
 
