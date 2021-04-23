@@ -59,7 +59,8 @@ $container = get_theme_mod( 'understrap_container_type' );
  
 					}
 					else {
-						echo 'You do not have access to this content.';
+						echo '<p>You do not have access to this content. Please login if this is your content.</p>';
+						wp_loginout();
 					}
 
 					;?>

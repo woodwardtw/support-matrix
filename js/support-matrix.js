@@ -46,6 +46,10 @@ function ajaxStatus(assessment, status){
         success : function( response ) {
             //alert('update success') //tells you it worked
             console.log(response)
+        },
+        error: function(xhr, status, error) {
+        var err = eval("(" + xhr.responseText + ")");
+        alert('It appears your login has expired. Please refresh the page and login again.');
         }
     });
 }
