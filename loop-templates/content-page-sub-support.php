@@ -30,261 +30,159 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 
 		<?php 
-					// echo the_field('groups_to_display').'<br>';
-					// echo the_field('report_access');
-					$args = array(
-						'post_type' => array('student'),
-						'order' => 'ASC',
-						'orderby' => 'title'
-					);
-					$user_id = get_current_user_id();
+			//get student post type and sort alpha
+			$args = array(
+				'post_type' => array('student'),
+				'order' => 'ASC',
+				'orderby' => 'title'
+			);
+			$user_id = get_current_user_id();//get current user ID
+			
+			//can current user see specific user group
+			if (get_field('student_groups', "user_{$user_id}")){
+				$cats = get_field('student_groups', "user_{$user_id}");
+				$args['cat'] = $cats;
+			}
+			//restrict group display by group URL parameter
+			if (isset($_GET['group'])){
+				$cat_slug = $_GET['group'];
+				$cat_id = get_category_by_slug($cat_slug)->term_id;
+				$args['cat'] = $cat_id;
+			}
+			//create hide/show group buttons for admins
+			if ( current_user_can('administrator')){
+				$all_cats = get_categories();
+				$base_url = strtok($_SERVER["REQUEST_URI"], '?');
+				echo "<div class=\"group-buttons\"><h2>View by group</h2><a class='btn btn-primary' href=\"{$base_url}\">All groups</a>";
+				foreach ($all_cats as $key => $cat) {
+					if($cat->slug != 'uncategorized'){
+						echo "<a class='btn btn-primary' href=\"{$base_url}?group={$cat->slug}\" id=\"{$cat->slug}\">{$cat->name}</a>";
+					}
+				}
+				echo "</div>";
+			}
+			$the_query = new WP_Query( $args );
+
+			//get current page ID
+			$assignment_page_id = $post->ID;
+			
+			//get post name 
+			$lecture = $post->post_name;
+
+			//get total students enrolled
+			$total = $the_query->post_count;
+
+			//array to hold the responses variables for counting
+			$need_help = array();
+		    $some_concern = array();
+			$confident = array();
+			$unanswered = array();
+
+			// The Loop
+			if ( $the_query->have_posts() ) :
+				echo '<canvas id="chart" width="400" height="100"></canvas>';//javascript chart holder
+				echo '<table><thead><tr><td>Name</td>';
+				if( have_rows('assignments') ): //table headers
+				    // Loop through rows.
+				    while( have_rows('assignments') ) : the_row();
+				        // Load sub field value.
+				        $assignment_name = get_sub_field('assignment_name');
+				        // Do something...
+				        echo "<td>{$assignment_name}</td>";
+				    // End loop.
+				    endwhile;
+
+				else :
+				    // Do nothing . . . 
+				endif;
+
+				echo '</tr></thead><tbody>';
+/*
+**
+**STUDENT PORTION
+**
+*/
+				$student_data = '';//save html to kick out after summary fields
+				while ( $the_query->have_posts() ) : $the_query->the_post();//*************build student data
+					$total_students = $the_query->post_count;//gets total number of student post type from query
+
+					$student_post_id = get_the_ID();//id of the student post type
 					
-					if (get_field('student_groups', "user_{$user_id}")){
-						$cats = get_field('student_groups', "user_{$user_id}");
-						$args['cat'] = $cats;
+					$student_title = get_the_title(); //student name
+
+					if(get_the_category()){
+						$group = get_the_category()[0]->slug;
+					} else {
+						$group = 'no group';
 					}
-					if (isset($_GET['group'])){
-						$cat_slug = $_GET['group'];
-						$cat_id = get_category_by_slug($cat_slug)->term_id;
-						$args['cat'] = $cat_id;
-					}
-
-					if ( current_user_can('administrator')){//group buttons for admins
-						//var_dump(get_categories());
-						$all_cats = get_categories();
-						$base_url = strtok($_SERVER["REQUEST_URI"], '?');
-						echo "<div class=\"group-buttons\"><h2>View by group</h2><a class='btn btn-primary' href=\"{$base_url}\">All groups</a>";
-						foreach ($all_cats as $key => $cat) {
-							if($cat->slug != 'uncategorized'){
-								echo "<a class='btn btn-primary' href=\"{$base_url}?group={$cat->slug}\" id=\"{$cat->slug}\">{$cat->name}</a>";
-							}
-						}
-						echo "</div>";
-					}
-					$the_query = new WP_Query( $args );
-					$assignment_page_id = $post->ID;
-					$lecture = $post->post_name;
-
-					$total = $the_query->post_count;
-
-					//count the responses variables
-					$need_help = array();
-				    $some_concern = array();
-					$confident = array();
-					$unanswered = array();
-
-					//var_dump($the_query);
-					// The Loop
-					if ( $the_query->have_posts() ) :
-						echo '<canvas id="chart" width="400" height="100"></canvas>';
-						echo '<table><thead><tr><td>Name</td>';
-						if( have_rows('assignments') ): //*************************BUILD THE TABLE HEADERS
-						    // Loop through rows.
-						    while( have_rows('assignments') ) : the_row();
-
-						        // Load sub field value.
-						        $assignment_name = get_sub_field('assignment_name');
-						        // Do something...
-						        echo "<td>{$assignment_name}</td>";
-						    // End loop.
-						    endwhile;
-
-						// No value.
-						else :
-						    // Do something...
-						endif;
-
-						echo '</tr></thead><tbody>';
-
-						while ( $the_query->have_posts() ) : $the_query->the_post();//*************build student data
-						  // Do Stuff
-							$total_students = $the_query->post_count;
-							$student_post_id = get_the_ID();
-							
-							$student_title = get_the_title();
-							if(get_the_category()){
-								$group = get_the_category()[0]->slug;
-							} else {
-								$group = 'no group';
-							}
-
-							echo "<tr class=\"student-row {$group}\"><td>{$student_title}</td>";							
-							
-							if( have_rows('assignments', $assignment_page_id) ): //BUILD THE TABLE HEADERS
-						    	// Loop through rows.
-						   		 while( have_rows('assignments', $assignment_page_id) ) : the_row();
-						   		 	
-							        // Load sub field value.
-							        $assignment_name = sanitize_title(get_sub_field('assignment_name',$assignment_page_id));
-							        // make individual student score cells 
-							      	echo "<td>" . get_student_meta($lecture, $assignment_name) . "</td>";
-							      	
-							      	//count scores
-							      	if (get_student_meta($lecture, $assignment_name) === 1){
-							      		$need_help[] = array($assignment_name => get_student_meta($lecture, $assignment_name));
-							      	}
-							      	if (get_student_meta($lecture, $assignment_name) === 2){
-							      		$some_concern[] = array($assignment_name => get_student_meta($lecture, $assignment_name));
-							      	}
-							      	if (get_student_meta($lecture, $assignment_name) === 3){
-							      		$confident[] = array($assignment_name => get_student_meta($lecture, $assignment_name));
-							      	}
-							      	if (get_student_meta($lecture, $assignment_name) === 'no response'){
-							      		$unanswered[] = array($assignment_name => get_student_meta($lecture, $assignment_name));
-							      	}
-							      	
-						    	// End loop.
-						   		 endwhile;
-						   	echo '</tr>';
-							// No value.
-							else :
-							    // Do something...
-							endif;
-
-
-							//OLD MESSY WAY JUST IN CASE
-							// if(get_field('assignment_1', $post_id)){
-							// 	$assg_1 = get_field('assignment_1', $post_id);
-							// 	array_push($avg_1, $assg_1);
-							// }
-							//foreach($assignments as $number){
-								//support_basic_avg('assignment_' . $number, $post_id, ${"avg_" . $number} );
-							//}											
-								
-							//get_template_part('loop-templates/content', 'table');
-						
-					endwhile;
-					// var_dump($need_help);
-					// var_dump($some_concern);
-					// var_dump($confident);
-
-
-					//ONES*********************
-					$total_ones = count($need_help);
-					echo "<tr id=\"total-one\" data-total={$total_ones} class=\"quantity one\"><td>Quantity \"1\"</td>";
-					if( have_rows('assignments', $assignment_page_id) ): //
-						    	// Loop through rows.
-						   	while( have_rows('assignments', $assignment_page_id) ) : the_row();
-						   		$assignment = sanitize_title(get_sub_field('assignment_name',$assignment_page_id));
-						   		echo '<td>' . count_assignment_numbers($need_help, $assignment) . '</td>';						   	
-				   		 	endwhile;
-				   		echo '</tr>';
-
-					// No value.
-					else :
-					    // Do something...
-					endif;
-					echo '<tr class="percent one"><td>Percentage "1"</td>';
-					if( have_rows('assignments', $assignment_page_id) ): //
-						    	// Loop through rows.
-						   	while( have_rows('assignments', $assignment_page_id) ) : the_row();
-						   		$assignment = sanitize_title(get_sub_field('assignment_name',$assignment_page_id));
-						   		$count = count_assignment_numbers($need_help, $assignment);
-						   		echo '<td>' . avg_assignment_numbers($total, $count) . '</td>';						   	
-				   		 	endwhile;
-				   		echo '</tr>';
-
-					// No value.
-					else :
-					    // Do something...
-					endif;
-					//TWOS*********************
-					$total_twos = count($some_concern);
-					echo "<tr id=\"total-two\" data-total={$total_twos} class=\"quantity two\"><td>Quantity \"2\"</td>";
-					if( have_rows('assignments', $assignment_page_id) ): //
-						    	// Loop through rows.
-						   	while( have_rows('assignments', $assignment_page_id) ) : the_row();
-						   		$assignment = sanitize_title(get_sub_field('assignment_name',$assignment_page_id));					
-						   		echo '<td>' . count_assignment_numbers($some_concern, $assignment) . '</td>';						   	
-				   		 	endwhile;
-				   		echo '</tr>';
-
-					// No value.
-					else :
-					    // Do something...
-					endif;
-					echo '<tr class="percent two"><td>Percentage "2"</td>';
-					if( have_rows('assignments', $assignment_page_id) ): //
-						    	// Loop through rows.
-						   	while( have_rows('assignments', $assignment_page_id) ) : the_row();
-						   		$assignment = sanitize_title(get_sub_field('assignment_name',$assignment_page_id));
-						   		$count = count_assignment_numbers($some_concern, $assignment);
-						   		echo '<td>' . avg_assignment_numbers($total, $count) . '</td>';						   	
-				   		 	endwhile;
-				   		echo '</tr>';
-
-					// No value.
-					else :
-					    // Do something...
-					endif;
-					//THREES*********************
-					$total_threes = count($confident);
-					echo "<tr id=\"total-three\" data-total={$total_threes} class=\"quantity three\"><td>Quantity \"3\"</td>";
-					if( have_rows('assignments', $assignment_page_id) ): //
-						    	// Loop through rows.
-						   	while( have_rows('assignments', $assignment_page_id) ) : the_row();
-						   		$assignment = sanitize_title(get_sub_field('assignment_name',$assignment_page_id));
-						   		echo '<td>' . count_assignment_numbers($confident, $assignment) . '</td>';						   	
-				   		 	endwhile;
-				   		echo '</tr>';
-
-					// No value.
-					else :
-					    // Do something...
-					endif;
-					echo '<tr class="percent three"><td>Percentage "3"</td>';
-					if( have_rows('assignments', $assignment_page_id) ): //
-						    	// Loop through rows.
-						   	while( have_rows('assignments', $assignment_page_id) ) : the_row();
-						   		$assignment = sanitize_title(get_sub_field('assignment_name',$assignment_page_id));
-						   		$count = count_assignment_numbers($confident, $assignment);
-						   		echo '<td>' . avg_assignment_numbers($total, $count) . '</td>';							   	
-				   		 	endwhile;
-				   		echo '</tr>';
-
-					// No value.
-					else :
-					    // Do something...
-					endif;
-					//UNANSWERED*********************
-				    $total_unanswered = count($unanswered);
-					echo "<tr id=\"total-unanswered\" data-total={$total_unanswered} class=\"quantity unanswered\"><td>Quantity \"Unanswered\"</td>";
-					if( have_rows('assignments', $assignment_page_id) ): //
-						    	// Loop through rows.
-						   	while( have_rows('assignments', $assignment_page_id) ) : the_row();
-						   		$assignment = sanitize_title(get_sub_field('assignment_name',$assignment_page_id));
-						   		echo '<td>' . count_assignment_numbers($unanswered, $assignment) . '</td>';						   	
-				   		 	endwhile;
-				   		echo '</tr>';
-
-					// No value.
-					else :
-					    // Do something...
-					endif;
-					echo '<tr class="percent unanswered"><td>Percentage Unanswered</td>';
-					if( have_rows('assignments', $assignment_page_id) ): //
-						    	// Loop through rows.
-						   	while( have_rows('assignments', $assignment_page_id) ) : the_row();
-						   		$assignment = sanitize_title(get_sub_field('assignment_name',$assignment_page_id));
-						   		$count = count_assignment_numbers($unanswered, $assignment);
-						   		echo '<td>' . avg_assignment_numbers($total, $count) . '</td>';							   	
-				   		 	endwhile;
-				   		echo '</tr>';
-
-					// No value.
-					else :
-					    // Do something...
-					endif;
-
-					echo '</tbody></table>';
-					endif;
 					
+					$student_data .= "<tr class=\"student-row {$group}\"><td>{$student_title}</td>";							
+					
+					if( have_rows('assignments', $assignment_page_id) ): //BUILD THE TABLE HEADERS
+				    	// Loop through rows.
+				   		 while( have_rows('assignments', $assignment_page_id) ) : the_row();
+				   		 	
+					        // Load sub field value.
+					        $assignment_name = sanitize_title(get_sub_field('assignment_name',$assignment_page_id));
+					        // make individual student score cells 
+					      	$student_data .= "<td>" . get_student_meta($lecture, $assignment_name) . "</td>";
+					      	
+					      	//count scores
+					      	if (get_student_meta($lecture, $assignment_name) === 1){
+					      		$need_help[] = array($assignment_name => get_student_meta($lecture, $assignment_name));//provision array for 1s
+					      	}
+					      	if (get_student_meta($lecture, $assignment_name) === 2){
+					      		$some_concern[] = array($assignment_name => get_student_meta($lecture, $assignment_name));//provision array for 2s
+					      	}
+					      	if (get_student_meta($lecture, $assignment_name) === 3){
+					      		$confident[] = array($assignment_name => get_student_meta($lecture, $assignment_name));//provision array for 3s
+					      	}
+					      	if (get_student_meta($lecture, $assignment_name) === 'no response' || get_student_meta($lecture, $assignment_name) === 'not done'){
+					      		$unanswered[] = array($assignment_name => get_student_meta($lecture, $assignment_name));//provision array for no response
+					      	}
+					      	
+				    	// End loop.
+				   		 endwhile;
+				   	$student_data .= '</tr>';
+					// No value.
+					else :
+					    // Do something...
+					endif;
+				
+			endwhile;
+/*
+**
+**END STUDENT PORTION
+**
+*/
+		
+/*
+**
+**SUMMARY PORTION
+**
+*/
+
+		quantity_row_builder('one', $need_help, $assignment_page_id);
+		percentage_row_builder('one',$need_help, $assignment_page_id, $total);
+		quantity_row_builder('two', $some_concern, $assignment_page_id);
+		percentage_row_builder('two',$some_concern, $assignment_page_id, $total);
+		quantity_row_builder('three', $confident, $assignment_page_id);		
+		percentage_row_builder('three',$confident, $assignment_page_id, $total);
+		quantity_row_builder('unanswered', $unanswered, $assignment_page_id);		
+		percentage_row_builder('unanswered',$unanswered, $assignment_page_id, $total);
+		echo $student_data;	//write out student data after the summaries
+	echo '</tbody></table>';
+	endif;
+/*
+**
+**END SUMMARY PORTION
+**
+*/
 
 
-					// Reset Post Data
-					wp_reset_postdata();
-
-				;?>
+			// Reset Post Data
+			wp_reset_postdata();			
+		;?>
 
 		<?php
 		wp_link_pages(
@@ -305,11 +203,3 @@ defined( 'ABSPATH' ) || exit;
 </article><!-- #post-## -->
 
 
-<?php 
-// for($i= 1; $i<=$5; $i++) {     
-// 	$EACH_POST_QUERY = mysql_query("SELECT item_id FROM likes WHERE item_id='$i'");     
-// 	$EACH_POST_TOTAL_LIKES = mysql_num_rows($EACH_POST_QUERY);     
-// 	$EACH_POST_RESULT = array($i => $EACH_POST_TOTAL_LIKES); 
-// }
-// $EACH_POST_RESULT[] = $EACH_POST_TOTAL_LIKES;
-?>

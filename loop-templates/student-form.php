@@ -7,7 +7,7 @@
                         $assignment_slug = sanitize_title($assignment_name);
                         echo '<div class="assessment">';
                         echo '<h4>' . $assignment_name . '</h4>';
-                        $states = array('Need Help', 'Some Concern', 'Confident');
+                        $states = array('Not Done', 'Need Help', 'Some Concern', 'Confident');
                         $checked = '';
                         foreach ($states as $key => $state) {
                               $state_clean = sanitize_title($state);
@@ -22,6 +22,7 @@
                               </div>";
                         }
                        echo '</div>';
+                       echo '<canvas id="chart" width="400" height="100"></canvas>';//javascript chart holder
                   }
             endwhile;
             // No value.

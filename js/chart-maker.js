@@ -1,9 +1,8 @@
-var ctx = document.getElementById('chart').getContext('2d');
-let red = document.getElementById('total-one').dataset.total;
-console.log(red);
-let yellow = document.getElementById('total-two').dataset.total;
-let green = document.getElementById('total-three').dataset.total;
-let noResponse = document.getElementById('total-unanswered').dataset.total;
+const ctx = document.getElementById('chart').getContext('2d');
+const red = document.getElementById('total-one').dataset.total;
+const yellow = document.getElementById('total-two').dataset.total;
+const green = document.getElementById('total-three').dataset.total;
+const noResponse = document.getElementById('total-unanswered').dataset.total;
 
 				var myChart = new Chart(ctx, {
 				    type: 'bar',

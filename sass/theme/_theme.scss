@@ -61,6 +61,10 @@ tr.three {
 	background-color: $green;
 }
 
+tr.unanswered {
+	background-color: #efefef;
+}
+
 tr.none {
 	background-color: #efefef;
 }
@@ -116,7 +120,7 @@ div[data-name="post_id"] {
 
 .input-piece {
 	display: inline-block;
-	width: 200px;
+	width: 20%;
 	margin: 5px 10px;
 }
 
@@ -127,8 +131,8 @@ div[data-name="post_id"] {
 }
 
 .show .input-piece input[type=radio]:checked::after {
-	content: '';
-	width: 200px;
+	content: '  ';
+	width: 100%;
 	height: 30px;
 	display: block;
 	z-index: -10;
