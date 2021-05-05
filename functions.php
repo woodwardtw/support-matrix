@@ -435,32 +435,32 @@ function support_matrix_get_current_user_roles() {
 }
 
 
-
+//USING ALTERNATE PROVISIONING MODEL DUE TO ISSUES WITH SSO 
 //make the area to upload the CSV for student creation
-if( function_exists('acf_add_options_page') ) {
+// if( function_exists('acf_add_options_page') ) {
 	
-	acf_add_options_page(array(
-		'page_title' 	=> 'Student Import',
-		'menu_title'	=> 'Student Import',
-		'menu_slug' 	=> 'support-matrix-student-import',
-		'capability'	=> 'edit_posts',
-		'redirect'		=> false
-	));
+// 	acf_add_options_page(array(
+// 		'page_title' 	=> 'Student Import',
+// 		'menu_title'	=> 'Student Import',
+// 		'menu_slug' 	=> 'support-matrix-student-import',
+// 		'capability'	=> 'edit_posts',
+// 		'redirect'		=> false
+// 	));
 	
-}
+// }
 
 //$variable = get_field('field_name', 'option');
 //add_action('acf/save_post', 'support_matrix_process_file', 'option');
-function support_matrix_process_file( $post_id ) {
+// function support_matrix_process_file( $post_id ) {
 
-    // Get previous values.
-    $prev_values = get_fields( $post_id );
+//     // Get previous values.
+//     $prev_values = get_fields( $post_id );
 
-    // Get submitted values.
-    $values = $_POST['acf']['field_5f47bbd0010c8'];
-    //write_log(wp_get_attachment_url($values));
-   Users_Import_Batch::setup( wp_get_attachment_url($values));
-}
+//     // Get submitted values.
+//     $values = $_POST['acf']['field_5f47bbd0010c8'];
+//     //write_log(wp_get_attachment_url($values));
+//    Users_Import_Batch::setup( wp_get_attachment_url($values));
+// }
 
 //AJAX
 //MAIN AJAX ACTION
