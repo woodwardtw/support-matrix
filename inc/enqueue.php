@@ -31,7 +31,7 @@ if ( ! function_exists( 'understrap_scripts' ) ) {
 		if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 			wp_enqueue_script( 'comment-reply' );
 		}
-
+//note it just loads for sub-support at the moment
 		if ( is_page_template( 'page-templates/sub-support.php' )) {
 			wp_enqueue_script( 'chart-js', 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js', array(), '2.8.0', false );
 			wp_enqueue_script( 'chart-maker', get_template_directory_uri() . '/js/chart-maker.js', array('chart-js'), $js_version, true);
