@@ -23,6 +23,7 @@
                         }
                        echo '</div>';
                        echo '<canvas id="chart" width="400" height="100"></canvas>';//javascript chart holder
+                       
                   }
             endwhile;
             // No value.

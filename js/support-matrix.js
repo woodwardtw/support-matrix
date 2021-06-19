@@ -27,7 +27,7 @@ if(document.getElementById('single-student')){
 	}
 }
 
-
+//update student responses
 function ajaxStatus(assessment, status){
     var complete = 'this.value';
     // var assessment = radio.dataset.assessment;

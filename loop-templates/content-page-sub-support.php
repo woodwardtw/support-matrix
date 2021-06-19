@@ -161,7 +161,7 @@ defined( 'ABSPATH' ) || exit;
 **SUMMARY PORTION
 **
 */
-
+//these functions live in table-specific.php
 		quantity_row_builder('one', $need_help, $assignment_page_id);
 		percentage_row_builder('one',$need_help, $assignment_page_id, $total);
 		quantity_row_builder('two', $some_concern, $assignment_page_id);
