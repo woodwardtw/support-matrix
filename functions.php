@@ -539,3 +539,40 @@ function support_matrix_json_load_point( $paths ) {
     return $paths;
     
 }
+
+add_action( 'init', 'create_team_taxonomies', 0 );
+function create_team_taxonomies()
+{
+  // Add new taxonomy, NOT hierarchical (like tags)
+  $labels = array(
+    'name' => _x( 'Teams', 'taxonomy general name' ),
+    'singular_name' => _x( 'team', 'taxonomy singular name' ),
+    'search_items' =>  __( 'Search Teams' ),
+    'popular_items' => __( 'Popular Teams' ),
+    'all_items' => __( 'All Teams' ),
+    'parent_item' => null,
+    'parent_item_colon' => null,
+    'edit_item' => __( 'Edit Teams' ),
+    'update_item' => __( 'Update team' ),
+    'add_new_item' => __( 'Add New team' ),
+    'new_item_name' => __( 'New team' ),
+    'add_or_remove_items' => __( 'Add or remove Teams' ),
+    'choose_from_most_used' => __( 'Choose from the most used Teams' ),
+    'menu_name' => __( 'team' ),
+  );
+
+//registers taxonomy specific post types - default is just post
+  register_taxonomy('Teams',array('post'), array(
+    'hierarchical' => true,
+    'labels' => $labels,
+    'show_ui' => false,
+    'update_count_callback' => '_update_post_term_count',
+    'query_var' => true,
+    'rewrite' => array( 'slug' => 'team' ),
+    'show_in_rest'          => true,
+    'rest_base'             => 'team',
+    'rest_controller_class' => 'WP_REST_Terms_Controller',
+    'show_in_nav_menus' => false,    
+  ));
+}
+
